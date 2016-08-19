@@ -118,7 +118,8 @@ end
 
 case node['nginx']['init_style']
 when 'runit'
-  node.set['nginx']['src_binary'] = node['nginx']['binary']
+  #node.set['nginx']['src_binary'] = node['nginx']['binary']
+  node.override['nginx']['binary'] = node['nginx']['source']['sbin_path']
   include_recipe 'runit::default'
 
   runit_service 'nginx'
