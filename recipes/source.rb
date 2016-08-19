@@ -28,7 +28,8 @@ node.load_attribute_by_short_filename('source', 'nginx') if node.respond_to?(:lo
 nginx_url = node['nginx']['source']['url'] ||
   "http://nginx.org/download/nginx-#{node['nginx']['source']['version']}.tar.gz"
 
-node.set['nginx']['binary']          = node['nginx']['source']['sbin_path']
+#node.set['nginx']['binary']          = node['nginx']['source']['sbin_path']
+node.override['nginx']['binary']     = node['nginx']['source']['sbin_path']
 node.set['nginx']['daemon_disable']  = true
 
 unless node['nginx']['source']['use_existing_user']
@@ -118,8 +119,7 @@ end
 
 case node['nginx']['init_style']
 when 'runit'
-  #node.set['nginx']['src_binary'] = node['nginx']['binary']
-  node.override['nginx']['binary'] = node['nginx']['source']['sbin_path']
+  node.set['nginx']['src_binary'] = node['nginx']['binary']
   include_recipe 'runit::default'
 
   runit_service 'nginx'
